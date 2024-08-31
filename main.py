@@ -1,12 +1,27 @@
-from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from typing import Annotated
+
+from fastapi import FastAPI, Path
+
 from pydantic import BaseModel, EmailStr
+
 import uvicorn
 
-app = FastAPI()
+from core.config import settings
+from api_v1 import router as router_v1
+from items_views import router as items_router
+from users.views import router as users_router
 
 
-class CreateUser(BaseModel):
-    email: EmailStr
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(router=router_v1, prefix=settings.api_v1_prefix)
+app.include_router(items_router, tags=['items'])
+app.include_router(users_router)
 
 
 @app.get('/')
@@ -22,43 +37,14 @@ def hello(name: str = 'World'):
     return {'message': f'Hello {name}'}
 
 
-@app.post('/users')
-def create_user(user: CreateUser):
-    return {'messages': 'success',
-            'email': user.email,}
-
-
 @app.post('/calc/add/')
 def add(a: int, b: int):
-    return {'a': a,
-            'b': b,
-            'result': a + b,
-            }
-
-
-@app.get('/items/')
-def list_items():
-    return [
-        'Item1',
-        'Item2',
-        'Item3',
-    ]
-
-
-@app.get('/items/latest/')
-def get_latest_item():
-    return {'item': {'id': '0', 'name': 'latest'}}
-
-
-@app.get('/items/{item_id}/')
-def get_item_by_id(item_id: int):
     return {
-        'item': {
-            'id': item_id
-            },
-        }
+        'a': a,
+        'b': b,
+        'result': a + b,
+    }
 
 
 if __name__ == '__main__':
     uvicorn.run('main:app', reload=True)
-    
