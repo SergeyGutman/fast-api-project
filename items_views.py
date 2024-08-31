@@ -27,5 +27,5 @@ def get_item_by_id(item_id: Annotated[int, Path(ge=1, lt=1_000_000)]):
         'item': {
             'id': item_id
             },
-        }
+        } 
 
