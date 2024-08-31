@@ -1,8 +1,6 @@
 __all__ = (
     'Base',
-    'DatabaseHelper'
-    'db_helper'
-    'Product',
+    'DatabaseHelper' 'db_helper' 'Product',
 )
 
 
