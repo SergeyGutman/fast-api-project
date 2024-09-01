@@ -8,7 +8,6 @@ from .base import Base
 # Импортируем только при проверке типа, дабы не было циклического импорта
 
 
-
 class Post(UserRelationMixin, Base):
     # _user_id_nullable = False
     # _user_id_unique = False
@@ -19,6 +18,12 @@ class Post(UserRelationMixin, Base):
         default='',
         server_default='',
     )
+
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__}(id={self.id}, username={self.title!r}, user_id={self.user_id})'
+
+    def __repr__(self) -> str:
+        return str(self)
     # Больше не требуется так как из mixins подмешиваем сюда
     # user_id: Mapped[int] = mapped_column(
     #     ForeignKey('users.id'),
