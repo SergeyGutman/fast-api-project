@@ -24,6 +24,7 @@ class Post(UserRelationMixin, Base):
 
     def __repr__(self) -> str:
         return str(self)
+
     # Больше не требуется так как из mixins подмешиваем сюда
     # user_id: Mapped[int] = mapped_column(
     #     ForeignKey('users.id'),
