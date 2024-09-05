@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy.orm import Mapped, relationship
 
 from .base import Base
-from .order_product_association import order_product_association_table
+from .order_product_association import OrderProductAssociation
 
 
 if TYPE_CHECKING:
@@ -16,6 +16,6 @@ class Product(Base):
     price: Mapped[int]
 
     orders: Mapped[list['Order']] = relationship(
-        secondary=order_product_association_table,
+        secondary=OrderProductAssociation,
         back_populates='products',
     )
